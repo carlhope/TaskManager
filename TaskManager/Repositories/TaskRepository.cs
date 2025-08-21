@@ -11,15 +11,19 @@ namespace TaskManager.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private const string FilePath = "tasks.json";
+        private readonly string _filePath;
+        public TaskRepository(string filePath)
+        {
+            _filePath = filePath;
+        }
 
         public List<TaskItem> LoadTasks()
         {
-            if (!File.Exists(FilePath)) return new List<TaskItem>();
+            if (!File.Exists(_filePath)) return new List<TaskItem>();
 
             try
             {
-                var json = File.ReadAllText(FilePath);
+                var json = File.ReadAllText(_filePath);
                 return JsonSerializer.Deserialize<List<TaskItem>>(json) ?? new List<TaskItem>();
             }
             catch
@@ -29,18 +33,25 @@ namespace TaskManager.Repositories
 
         }
 
-        public void SaveTasks(List<TaskItem> tasks)
+        public bool SaveTasks(List<TaskItem> tasks)
         {
+            if (tasks.Any(t => string.IsNullOrWhiteSpace(t.Title)))
+            {
+                Console.WriteLine("Validation error: Task title cannot be empty.");
+                return false;
+            }
+
             try
             {
                 var json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(FilePath, json);
+                File.WriteAllText(_filePath, json);
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Error saving tasks.");
+                Console.WriteLine($"Unexpected error saving tasks: {ex.Message}");
+                return false;
             }
-
         }
     }
 }

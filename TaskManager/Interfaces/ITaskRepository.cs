@@ -10,6 +10,6 @@ namespace TaskManager.Interfaces
     public interface ITaskRepository
     {
         List<TaskItem> LoadTasks();
-        void SaveTasks(List<TaskItem> tasks);
+        bool SaveTasks(List<TaskItem> tasks);
     }
 }
