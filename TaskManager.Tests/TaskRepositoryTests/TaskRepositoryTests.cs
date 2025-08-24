@@ -3,7 +3,7 @@ using System.Text.Json;
 using TaskManager.Models;
 using TaskManager.Repositories;
 
-namespace TaskManager.Tests
+namespace TaskManager.Tests.TaskRepositoryTests
 {
     public class TaskRepositoryTests
     {

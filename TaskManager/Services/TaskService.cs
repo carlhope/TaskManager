@@ -11,9 +11,9 @@ namespace TaskManager.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly TaskRepository _repository;
+        private readonly ITaskRepository _repository;
 
-        public TaskService(TaskRepository repository)
+        public TaskService(ITaskRepository repository)
         {
             _repository = repository;
         }
@@ -58,6 +58,8 @@ namespace TaskManager.Services
         {
             var tasks = _repository.LoadTasks();
             if (index < 0 || index >= tasks.Count) return false;
+            if (string.IsNullOrWhiteSpace(newTitle)) return false;
+
 
             var task = tasks[index];
             task.Title = newTitle;
