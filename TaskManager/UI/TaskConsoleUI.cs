@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Interfaces;
+using TaskManager.Models;
 using TaskManager.Services;
 
 namespace TaskManager.UI
@@ -64,7 +65,8 @@ namespace TaskManager.UI
                 {
                     var task = pending[i];
                     Console.WriteLine($"  {i}: {(string.IsNullOrWhiteSpace(task.Title) ? "[None]" : task.Title)} (Due: {(task.DueDate != DateOnly.MinValue ? task.DueDate.ToShortDateString() : "[None]")})");
-                    Console.WriteLine($"  Description: {(string.IsNullOrWhiteSpace(task.Description) ? "[None]" : task.Description)}\n");
+                    Console.WriteLine($"  Description: {(string.IsNullOrWhiteSpace(task.Description) ? "[None]" : task.Description)}");
+                    Console.WriteLine($"  Priority: {task.Priority}\n");
                 }
                 
             }
@@ -103,8 +105,22 @@ namespace TaskManager.UI
                 Console.ReadLine();
                 return;
             }
+            Console.WriteLine("Select priority:");
+            Console.WriteLine("1. Low");
+            Console.WriteLine("2. Medium");
+            Console.WriteLine("3. High");
+            Console.Write("Enter choice (1-3): ");
+            var input = Console.ReadLine();
 
-            bool success = taskService.AddTask(title, description, dueDate);
+            Priority taskPriority = input switch
+            {
+                "1" => Priority.Low,
+                "2" => Priority.Medium,
+                "3" => Priority.High,
+                _ => Priority.Medium
+            };
+
+            bool success = taskService.AddTask(title, description, dueDate, taskPriority);
             Console.WriteLine(success ? "Task added successfully." : "Failed to add task.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();
@@ -192,8 +208,26 @@ namespace TaskManager.UI
                 Console.ReadLine();
                 return;
             }
+            Console.WriteLine("Update priority (leave blank to keep current):");
+            Console.WriteLine("1. Low");
+            Console.WriteLine("2. Medium");
+            Console.WriteLine("3. High");
+            Console.Write("Enter choice (1-3): ");
+            var input = Console.ReadLine();
+            Priority taskPriority = original.Priority;
 
-            bool success = taskService.ModifyTask(index, newTitle, newDescription, newDueDate);
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                taskPriority = input switch
+                {
+                    "1" => Priority.Low,
+                    "2" => Priority.Medium,
+                    "3" => Priority.High,
+                    _ => Priority.Medium
+                };
+            }
+
+            bool success = taskService.ModifyTask(index, newTitle, newDescription, newDueDate, taskPriority);
             Console.WriteLine(success ? "Task updated successfully." : "Failed to update task.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();

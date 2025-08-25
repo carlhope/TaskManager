@@ -10,8 +10,8 @@ namespace TaskManager.Interfaces
     public interface ITaskService
     {
       
-            bool AddTask(string title, string description, DateOnly dueDate);
-            bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate);
+            bool AddTask(string title, string description, DateOnly dueDate, Priority priority);
+            bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate, Priority priority);
             bool MarkTaskAsComplete(Guid id);
             (List<TaskItem> pending, List<TaskItem> completed) ListTasks();
     }
