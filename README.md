@@ -22,6 +22,7 @@ Designed to showcase backend patterns such as layered services, repository abstr
 ## 📦 Features
 - Add tasks with title, description, due date, and priority
 - View tasks grouped by completion status
+- Tasks are sorted for clarity: pending by due date, completed by last update timestamp
 - Mark tasks as complete
 - Edit existing tasks
 - Persist tasks between sessions using JSON file storage
