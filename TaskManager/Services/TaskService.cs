@@ -29,6 +29,7 @@ namespace TaskManager.Services
                 Description = description,
                 DueDate = dueDate,
                 IsComplete = false
+
             });
 
             return _repository.SaveTasks(tasks);
@@ -65,6 +66,7 @@ namespace TaskManager.Services
             task.Title = newTitle;
             task.Description = newDescription;
             task.DueDate = newDueDate;
+            task.UpdatedAt = DateTime.Now;
             return _repository.SaveTasks(tasks);
 
 
