@@ -32,8 +32,9 @@ namespace TaskManager.Tests.TaskServiceTests
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(true);
+            var targetId = tasks[0].Id;
             // Act
-            var result = _service.MarkTaskAsComplete(0);
+            var result = _service.MarkTaskAsComplete(targetId);
             // Assert
             result.Should().BeTrue();
             tasks[0].IsComplete.Should().BeTrue();
@@ -48,8 +49,9 @@ namespace TaskManager.Tests.TaskServiceTests
                 new TaskItem { Title = "Only one", IsComplete = false }
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
+            var invalidId = Guid.NewGuid();
             // Act
-            var result = _service.MarkTaskAsComplete(5);
+            var result = _service.MarkTaskAsComplete(invalidId);
             // Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
@@ -65,8 +67,9 @@ namespace TaskManager.Tests.TaskServiceTests
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(false);
+            var targetId = tasks[0].Id;
             // Act
-            var result = _service.MarkTaskAsComplete(0);
+            var result = _service.MarkTaskAsComplete(targetId);
             // Assert
             result.Should().BeFalse();
             tasks[0].IsComplete.Should().BeTrue();
@@ -82,8 +85,9 @@ namespace TaskManager.Tests.TaskServiceTests
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(true);
+            var targetId = tasks[0].Id;
             // Act
-            var result = _service.MarkTaskAsComplete(0);
+            var result = _service.MarkTaskAsComplete(targetId);
             // Assert
             result.Should().BeTrue();
             tasks[0].IsComplete.Should().BeTrue();

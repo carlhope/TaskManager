@@ -44,14 +44,14 @@ namespace TaskManager.Services
 
         }
 
-        public bool MarkTaskAsComplete(int index)
+        public bool MarkTaskAsComplete(Guid id)
         {
             var tasks = _repository.LoadTasks();
-            if (index < 0 || index >= tasks.Count) return false;
+            var task = tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null) return false;
 
-            tasks[index].IsComplete = true;
+            task.IsComplete = true;
             return _repository.SaveTasks(tasks);
-
         }
 
         public bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate)
