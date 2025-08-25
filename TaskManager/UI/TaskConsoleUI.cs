@@ -63,9 +63,10 @@ namespace TaskManager.UI
                 for (int i = 0; i < pending.Count; i++)
                 {
                     var task = pending[i];
-                    Console.WriteLine($"  {i}: {task.Title} (Due: {task.DueDate})");
+                    Console.WriteLine($"  {i}: {(string.IsNullOrWhiteSpace(task.Title) ? "[None]" : task.Title)} (Due: {(task.DueDate != DateOnly.MinValue ? task.DueDate.ToShortDateString() : "[None]")})");
                     Console.WriteLine($"  Description: {(string.IsNullOrWhiteSpace(task.Description) ? "[None]" : task.Description)}\n");
                 }
+                
             }
 
             Console.WriteLine("\nCompleted Tasks:\n");
@@ -78,7 +79,7 @@ namespace TaskManager.UI
                 for (int i = 0; i < completed.Count; i++)
                 {
                     var task = completed[i];
-                    Console.WriteLine($"  {i}: {task.Title} (Completed)");
+                    Console.WriteLine($"  {i}: {(string.IsNullOrWhiteSpace(task.Title) ? "[None]" : task.Title)} (Completed)");
                     Console.WriteLine($"  Description: {(string.IsNullOrWhiteSpace(task.Description) ? "[None]" : task.Description)}\n");
                 }
             }
