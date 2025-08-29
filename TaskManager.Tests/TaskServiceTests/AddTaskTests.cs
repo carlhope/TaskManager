@@ -30,7 +30,7 @@ namespace TaskManager.Tests.TaskServiceTests
             _mockRepository.Setup(r => r.LoadTasks()).Returns(existingTasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(true);
             //Act
-            var result = _service.AddTask("Create unit tests", "Ensure code works as expected", DateOnly.FromDateTime(DateTime.Today));
+            var result = _service.AddTask("Create unit tests", "Ensure code works as expected", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             //Assert
             result.Should().BeTrue();
             _mockRepository.Verify(r => r.SaveTasks(It.Is<List<TaskItem>>(list =>
@@ -45,7 +45,7 @@ namespace TaskManager.Tests.TaskServiceTests
         {
             //Arrange
             //Act
-            var result = _service.AddTask("", "No title", DateOnly.FromDateTime(DateTime.Today));
+            var result = _service.AddTask("", "No title", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             //Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
@@ -56,7 +56,7 @@ namespace TaskManager.Tests.TaskServiceTests
         {
             //Arrange
             //Act
-            var result = _service.AddTask("   ", "Whitespace title", DateOnly.FromDateTime(DateTime.Today));
+            var result = _service.AddTask("   ", "Whitespace title", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             //Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
@@ -70,7 +70,7 @@ namespace TaskManager.Tests.TaskServiceTests
             _mockRepository.Setup(r => r.LoadTasks()).Returns(existingTasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(false);
             //Act
-            var result = _service.AddTask("Failing Task", "Should fail", DateOnly.FromDateTime(DateTime.Today));
+            var result = _service.AddTask("Failing Task", "Should fail", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             //Assert
             result.Should().BeFalse();
         }
@@ -86,7 +86,7 @@ namespace TaskManager.Tests.TaskServiceTests
             _mockRepository.Setup(r => r.LoadTasks()).Returns(existingTasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(true);
             // Act
-            var result = _service.AddTask("New Task", "Task to be added", DateOnly.FromDateTime(DateTime.Today));
+            var result = _service.AddTask("New Task", "Task to be added", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             // Assert
             result.Should().BeTrue();
             _mockRepository.Verify(r => r.SaveTasks(It.Is<List<TaskItem>>(list =>
