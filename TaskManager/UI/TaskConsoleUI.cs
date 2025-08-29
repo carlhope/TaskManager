@@ -37,10 +37,10 @@ namespace TaskManager.UI
 
                 switch (Console.ReadLine())
                 {
-                    case "1": ViewTasks(_taskService); break;
-                    case "2": AddTask(_taskService); break;
-                    case "3": CompleteTask(_taskService); break;
-                    case "4": EditTask(_taskService); break;
+                    case "1": ViewTasks(); break;
+                    case "2": AddTask(); break;
+                    case "3": CompleteTask(); break;
+                    case "4": EditTask(); break;
                     case "5": running = false; break;
                     default:
                         Console.WriteLine("Invalid option. Press Enter to try again.");
@@ -49,10 +49,10 @@ namespace TaskManager.UI
                 }
             }
         }
-        static void ViewTasks(ITaskService taskService)
+        void ViewTasks()
         {
             Console.Clear();
-            var (pending, completed) = taskService.ListTasks();
+            var (pending, completed) = _taskService.ListTasks();
 
             Console.WriteLine("Pending Tasks:\n");
             if (!pending.Any())
@@ -89,7 +89,7 @@ namespace TaskManager.UI
             Console.WriteLine("\nPress Enter to return to the menu.");
             Console.ReadLine();
         }
-        static void AddTask(ITaskService taskService)
+        void AddTask()
         {
             Console.Clear();
             Console.WriteLine("Add New Task\n");
@@ -120,15 +120,15 @@ namespace TaskManager.UI
                 _ => Priority.Medium
             };
 
-            bool success = taskService.AddTask(title, description, dueDate, taskPriority);
+            bool success = _taskService.AddTask(title, description, dueDate, taskPriority);
             Console.WriteLine(success ? "Task added successfully." : "Failed to add task.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();
         }
-        static void CompleteTask(ITaskService taskService)
+        void CompleteTask()
         {
             Console.Clear();
-            var (pending, _) = taskService.ListTasks();
+            var (pending, _) = _taskService.ListTasks();
 
             if (!pending.Any())
             {
@@ -153,16 +153,16 @@ namespace TaskManager.UI
             }
 
             Guid taskId = pending[index].Id;
-            bool success = taskService.MarkTaskAsComplete(taskId);
+            bool success = _taskService.MarkTaskAsComplete(taskId);
 
             Console.WriteLine(success ? "Task marked as complete." : "Failed to mark task as complete.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();
         }
-        static void EditTask(ITaskService taskService)
+        void EditTask()
         {
             Console.Clear();
-            var (pending, _) = taskService.ListTasks();
+            var (pending, _) = _taskService.ListTasks();
 
             if (!pending.Any())
             {
@@ -227,7 +227,7 @@ namespace TaskManager.UI
                 };
             }
 
-            bool success = taskService.ModifyTask(index, newTitle, newDescription, newDueDate, taskPriority);
+            bool success = _taskService.ModifyTask(index, newTitle, newDescription, newDueDate, taskPriority);
             Console.WriteLine(success ? "Task updated successfully." : "Failed to update task.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();
