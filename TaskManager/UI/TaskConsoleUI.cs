@@ -227,7 +227,7 @@ namespace TaskManager.UI
                 };
             }
 
-            bool success = _taskService.ModifyTask(index, newTitle, newDescription, newDueDate, taskPriority);
+            bool success = _taskService.ModifyTask(original.Id, newTitle, newDescription, newDueDate, taskPriority);
             Console.WriteLine(success ? "Task updated successfully." : "Failed to update task.");
             Console.WriteLine("Press Enter to return.");
             Console.ReadLine();

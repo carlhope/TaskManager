@@ -11,8 +11,9 @@ namespace TaskManager.Interfaces
     {
       
             bool AddTask(string title, string description, DateOnly dueDate, Priority priority);
-            bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate, Priority priority);
+            //bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate, Priority priority);
             bool MarkTaskAsComplete(Guid id);
             (List<TaskItem> pending, List<TaskItem> completed) ListTasks();
+            bool ModifyTask(Guid id, string newTitle, string newDescription, DateOnly newDueDate, Priority newPriority);
     }
 }

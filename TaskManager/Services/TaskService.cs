@@ -57,14 +57,31 @@ namespace TaskManager.Services
             return _repository.SaveTasks(tasks);
         }
 
-        public bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate, Priority newPriority)
+        //public bool ModifyTask(int index, string newTitle, string newDescription, DateOnly newDueDate, Priority newPriority)
+        //{
+        //    var tasks = _repository.LoadTasks();
+        //    if (index < 0 || index >= tasks.Count) return false;
+        //    if (string.IsNullOrWhiteSpace(newTitle)) return false;
+
+
+        //    var task = tasks[index];
+        //    task.Title = newTitle;
+        //    task.Description = newDescription;
+        //    task.DueDate = newDueDate;
+        //    task.Priority = newPriority;
+        //    task.UpdatedAt = DateTime.Now;
+        //    return _repository.SaveTasks(tasks);
+
+
+        //} previous version commented out whilst verifying new version works
+        public bool ModifyTask(Guid id, string newTitle, string newDescription, DateOnly newDueDate, Priority newPriority)
         {
             var tasks = _repository.LoadTasks();
-            if (index < 0 || index >= tasks.Count) return false;
+            if (tasks.All(t=>t.Id!=id)) return false;
             if (string.IsNullOrWhiteSpace(newTitle)) return false;
 
 
-            var task = tasks[index];
+            var task = tasks.Where(t=>t.Id==id).FirstOrDefault();
             task.Title = newTitle;
             task.Description = newDescription;
             task.DueDate = newDueDate;

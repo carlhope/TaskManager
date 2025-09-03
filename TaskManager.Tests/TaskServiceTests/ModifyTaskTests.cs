@@ -26,14 +26,15 @@ namespace TaskManager.Tests.TaskServiceTests
         public void ModifyTask_ValidIndexAndInput_ShouldReturnTrue()
         {
             // Arrange
+            var randomId = Guid.NewGuid();
             var tasks = new List<TaskItem>
             {
-                new TaskItem { Title = "Old Title", Description = "Old Description", DueDate = DateOnly.FromDateTime(DateTime.Today) }
+                new TaskItem {Id = randomId, Title = "Old Title", Description = "Old Description", DueDate = DateOnly.FromDateTime(DateTime.Today) }
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(true);
             // Act
-            var result = _service.ModifyTask(0, "New Title", "New Description", DateOnly.FromDateTime(DateTime.Today.AddDays(1)), Priority.Medium);
+            var result = _service.ModifyTask(randomId, "New Title", "New Description", DateOnly.FromDateTime(DateTime.Today.AddDays(1)), Priority.Medium);
             // Assert
             result.Should().BeTrue();
             tasks[0].Title.Should().Be("New Title");
@@ -48,7 +49,7 @@ namespace TaskManager.Tests.TaskServiceTests
             var tasks = new List<TaskItem>();
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             // Act
-            var result = _service.ModifyTask(5, "New Title", "New Description", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
+            var result = _service.ModifyTask(Guid.NewGuid(), "New Title", "New Description", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             // Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
@@ -64,7 +65,7 @@ namespace TaskManager.Tests.TaskServiceTests
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             // Act
-            var result = _service.ModifyTask(0, "", "New Desc", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
+            var result = _service.ModifyTask(Guid.NewGuid(), "", "New Desc", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             // Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
@@ -81,7 +82,7 @@ namespace TaskManager.Tests.TaskServiceTests
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             _mockRepository.Setup(r => r.SaveTasks(It.IsAny<List<TaskItem>>())).Returns(false);
             // Act
-            var result = _service.ModifyTask(0, "New title", "New description", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
+            var result = _service.ModifyTask(Guid.NewGuid(), "New title", "New description", DateOnly.FromDateTime(DateTime.Today), Priority.Medium);
             // Assert
             result.Should().BeFalse();
         }
@@ -96,7 +97,7 @@ namespace TaskManager.Tests.TaskServiceTests
             };
             _mockRepository.Setup(r => r.LoadTasks()).Returns(tasks);
             // Act
-            var result = _service.ModifyTask(0, "   ", "New description", DateOnly.FromDateTime(DateTime.Today),Priority.Medium);
+            var result = _service.ModifyTask(Guid.NewGuid(), "   ", "New description", DateOnly.FromDateTime(DateTime.Today),Priority.Medium);
             // Assert
             result.Should().BeFalse();
             _mockRepository.Verify(r => r.SaveTasks(It.IsAny<List<TaskItem>>()), Times.Never);
