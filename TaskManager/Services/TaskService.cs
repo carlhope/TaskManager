@@ -76,12 +76,11 @@ namespace TaskManager.Services
         //} previous version commented out whilst verifying new version works
         public bool ModifyTask(Guid id, string newTitle, string newDescription, DateOnly newDueDate, Priority newPriority)
         {
-            var tasks = _repository.LoadTasks();
-            if (tasks.All(t=>t.Id!=id)) return false;
             if (string.IsNullOrWhiteSpace(newTitle)) return false;
+            var tasks = _repository.LoadTasks();
+            var task = tasks.Where(t => t.Id == id).FirstOrDefault();
+            if (task==null) return false;
 
-
-            var task = tasks.Where(t=>t.Id==id).FirstOrDefault();
             task.Title = newTitle;
             task.Description = newDescription;
             task.DueDate = newDueDate;
